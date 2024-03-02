@@ -12,6 +12,19 @@ func TestGeneratePrivateKey(t *testing.T) {
 	assert.Equal(t, len(publicKey.Bytes()), publicKeySize)
 }
 
+func TestNewPrivateKeyFromString(t *testing.T) {
+	var (
+		seedString    = "6ccb38af8bb221e9ed2ffc05a0ef090c58abfd7a19646254c49170a3127f4915"
+		privateKey    = GeneratePrivateKeyWithString(seedString)
+		addressString = "09065fb49bbbfe6db0f9211925be3a1cfde27ff8"
+	)
+
+	assert.Equal(t, len(privateKey.Bytes()), privateKeySize)
+	address := privateKey.Public().Address()
+	assert.Equal(t, address.String(), addressString)
+
+}
+
 func TestPrivateKeySign(t *testing.T) {
 	validPrivateKey := GeneratePrivateKey()
 	validPublicKey := validPrivateKey.Public()
@@ -29,4 +42,9 @@ func TestPrivateKeySign(t *testing.T) {
 	// test for the invalid message
 	invalidMessage := []byte("Hello, world")
 	assert.False(t, signature.Verify(validPublicKey, invalidMessage))
+}
+
+func TestPublicKeyAddress(t *testing.T) {
+	publicKey := GeneratePrivateKey().Public()
+	assert.Equal(t, len(publicKey.Address().Bytes()), addressSize)
 }
