@@ -14,10 +14,14 @@ func TestHashBlock(t *testing.T) {
 }
 
 func TestSignBlock(t *testing.T) {
-	privateKey := crypto.GeneratePrivateKey()
-	publickKey := privateKey.Public()
-	block := util.RandomBlock()
+	var (
+		privateKey = crypto.GeneratePrivateKey()
+		publickKey = privateKey.Public()
+		block      = util.RandomBlock()
+	)
 	signature := SignBlock(privateKey, block)
 	// Verify the signature
+	assert.Equal(t, len(signature.Bytes()), 64)
 	assert.True(t, signature.Verify(publickKey, HashBlock(block)))
+
 }
