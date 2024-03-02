@@ -74,12 +74,12 @@ type Signature struct {
 	value []byte
 }
 
-func (s *Signature) Bytes() []byte {
-	return s.value
-}
-
 func (s *Signature) Verify(publicKey *PublicKey, message []byte) bool {
 	return ed25519.Verify(publicKey.key, message, s.value)
+}
+
+func (s *Signature) Bytes() []byte {
+	return s.value
 }
 
 type Address struct {
