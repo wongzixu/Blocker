@@ -33,6 +33,7 @@ func TestPrivateKeySign(t *testing.T) {
 
 	// test for the valid signature
 	assert.True(t, signature.Verify(validPublicKey, message))
+	assert.True(t, signature.Verify(validPublicKey, message))
 
 	// test for the invalid signature
 	invalidPrivateKey := GeneratePrivateKey()
