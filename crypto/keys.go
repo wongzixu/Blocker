@@ -70,18 +70,6 @@ func (p *PublicKey) Address() Address {
 	return Address{p.key[len(p.key)-addressSize:]}
 }
 
-type Signature struct {
-	value []byte
-}
-
-func (s *Signature) Verify(publicKey *PublicKey, message []byte) bool {
-	return ed25519.Verify(publicKey.key, message, s.value)
-}
-
-func (s *Signature) Bytes() []byte {
-	return s.value
-}
-
 type Address struct {
 	value []byte
 }
@@ -92,4 +80,16 @@ func (a Address) Bytes() []byte {
 
 func (a Address) String() string {
 	return hex.EncodeToString(a.value)
+}
+
+type Signature struct {
+	value []byte
+}
+
+func (s *Signature) Verify(publicKey *PublicKey, message []byte) bool {
+	return ed25519.Verify(publicKey.key, message, s.value)
+}
+
+func (s *Signature) Bytes() []byte {
+	return s.value
 }
