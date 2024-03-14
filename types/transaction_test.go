@@ -4,6 +4,7 @@ import (
 	"Blocker/crypto"
 	"Blocker/proto"
 	"Blocker/util"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -38,5 +39,7 @@ func TestNewTransaction(t *testing.T) {
 
 	signature := SignTransaction(ourPrivateKey, tx)
 	input.Signature = signature.Bytes()
-
+	// This is false, since we first hash the no-signature version of the tx
+	// then add the signature to the tx.
+	assert.True(t, VerifyTransaction(tx))
 }

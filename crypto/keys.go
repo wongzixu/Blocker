@@ -8,10 +8,11 @@ import (
 )
 
 const (
-	privateKeySize = ed25519.PrivateKeySize
-	publicKeySize  = ed25519.PublicKeySize
-	seedSize       = 32
-	addressSize    = 20
+	privateKeySize  = ed25519.PrivateKeySize
+	publicKeySize   = ed25519.PublicKeySize
+	seedSize        = 32
+	addressSize     = 20
+	signatureLength = 64
 )
 
 type PrivateKey struct {
@@ -46,6 +47,15 @@ func GeneratePrivateKey() *PrivateKey {
 	}
 
 	return &PrivateKey{ed25519.NewKeyFromSeed(seed)}
+}
+
+func PublicKeyFromBytes(b []byte) *PublicKey {
+	if len(b) != publicKeySize {
+		panic("The public key size is wrong, if in verify non-valid verify")
+	}
+	return &PublicKey{
+		key: b,
+	}
 }
 
 func (p *PrivateKey) Bytes() []byte {
@@ -92,4 +102,13 @@ func (s *Signature) Verify(publicKey *PublicKey, message []byte) bool {
 
 func (s *Signature) Bytes() []byte {
 	return s.value
+}
+
+func SignatureFromBytes(b []byte) *Signature {
+	if len(b) != signatureLength {
+		panic("The length of the bytes should be equal to 64")
+	}
+	return &Signature{
+		value: b,
+	}
 }
